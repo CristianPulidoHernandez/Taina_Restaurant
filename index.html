@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tainá | Churrasca Brasileña — Val'Quirico</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0F0D0B;
+      --bg-stone: #1C1814;
+      --card-bg: rgba(24, 21, 18, 0.88);
+      --gold: #D4AF37;
+      --gold-soft: #C59B27;
+      --gold-glow: rgba(212, 175, 55, 0.28);
+      --ember-glow: rgba(196, 77, 34, 0.16);
+      --text-main: #F5F2EB;
+      --text-muted: #A8A194;
+      --border-gold: rgba(212, 175, 55, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-dark);
+      /* Capas ambientales: luz de fachada arriba, resplandor de brasas abajo y tonos piedra/tierra */
+      background-image:
+        radial-gradient(ellipse at 50% 0%, rgba(212, 175, 55, 0.14) 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 105%, var(--ember-glow) 0%, rgba(120, 45, 20, 0.08) 40%, transparent 70%),
+        linear-gradient(160deg, #171411 0%, #0E0C0A 50%, #19130E 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Textura sutil de muro de estuco/piedra rústica estilo Val'Quirico */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.22;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.45'/%3E%3C/svg%3E");
+    }
+
+    /* Marco arquitectónico sutil en el fondo (evoca arcos y piedra medieval) */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 14px;
+      left: 14px;
+      right: 14px;
+      bottom: 14px;
+      border: 1px solid rgba(212, 175, 55, 0.10);
+      border-radius: 26px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Contenedor de ascuas/chispas flotantes muy tenues */
+    .embers-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .ember {
+      position: absolute;
+      bottom: -10px;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #FFD27D 0%, #D96B27 70%, transparent 100%);
+      opacity: 0;
+      animation: riseEmber linear infinite;
+    }
+
+    .ember:nth-child(1) { left: 15%; animation-duration: 9s; animation-delay: 0s; }
+    .ember:nth-child(2) { left: 32%; animation-duration: 12s; animation-delay: 3s; width: 2px; height: 2px; }
+    .ember:nth-child(3) { left: 55%; animation-duration: 10s; animation-delay: 1.5s; }
+    .ember:nth-child(4) { left: 74%; animation-duration: 13s; animation-delay: 4s; width: 2px; height: 2px; }
+    .ember:nth-child(5) { left: 88%; animation-duration: 11s; animation-delay: 2s; }
+
+    @keyframes riseEmber {
+      0% {
+        transform: translateY(0) translateX(0) scale(1);
+        opacity: 0;
+      }
+      20% {
+        opacity: 0.45;
+      }
+      80% {
+        opacity: 0.25;
+      }
+      100% {
+        transform: translateY(-105vh) translateX(18px) scale(0.4);
+        opacity: 0;
+      }
+    }
+
+    /* Selector superior solo para que tú cambies de vista en la demo */
+    .demo-switcher {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      background: rgba(18, 16, 14, 0.75);
+      backdrop-filter: blur(8px);
+      padding: 5px;
+      border-radius: 999px;
+      border: 1px solid rgba(212, 175, 55, 0.25);
+    }
+
+    .demo-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .demo-btn.active {
+      background: var(--gold);
+      color: #121110;
+    }
+
+    /* Tarjeta principal con efecto cristal ahumado sobre la textura */
+    .container {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 420px;
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border-gold);
+      border-radius: 22px;
+      padding: 32px 24px;
+      box-shadow:
+        0 24px 60px rgba(0, 0, 0, 0.8),
+        0 0 35px rgba(212, 175, 55, 0.08),
+        inset 0 1px 0 rgba(255, 235, 180, 0.12);
+      text-align: center;
+      overflow: hidden;
+    }
+
+    /* Halo de luz cálida retroiluminada (como el letrero exterior de Tainá) */
+    .container::before {
+      content: "";
+      position: absolute;
+      top: -35px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 240px;
+      height: 90px;
+      background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.22) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Marca Tainá */
+    .brand-title {
+      font-family: 'Cinzel', serif;
+      font-size: 2.65rem;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 2px;
+      line-height: 1.1;
+      text-shadow: 0 2px 18px rgba(212, 175, 55, 0.35);
+    }
+
+    .brand-subtitle {
+      font-size: 0.72rem;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      color: var(--gold-soft);
+      margin-top: 4px;
+      margin-bottom: 22px;
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-gold), transparent);
+      margin: 18px 0;
+    }
+
+    h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+
+    p.desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 22px;
+    }
+
+    /* Estrellas interactivas */
+    .stars-wrapper {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .star-btn {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      border-radius: 12px;
+      width: 52px;
+      height: 52px;
+      font-size: 1.65rem;
+      color: #4A463F;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .star-btn:hover,
+    .star-btn.active {
+      color: var(--gold);
+      border-color: var(--gold);
+      background: rgba(212, 175, 55, 0.14);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px var(--gold-glow);
+    }
+
+    .rating-label {
+      font-size: 0.85rem;
+      color: var(--gold);
+      min-height: 20px;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+
+    /* Paneles dinámicos */
+    .panel {
+      display: none;
+      animation: fadeIn 0.35s ease forwards;
+      text-align: left;
+    }
+
+    .panel.visible {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      background: rgba(14, 12, 10, 0.85);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      border-radius: 10px;
+      padding: 11px 13px;
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--gold);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 85px;
+    }
+
+    .btn-primary {
+      width: 100%;
+      background: linear-gradient(135deg, #E2C044 0%, #B88A1E 100%);
+      color: #121110;
+      border: none;
+      border-radius: 12px;
+      padding: 13px 18px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px var(--gold-glow);
+    }
+
+    .btn-secondary {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-main);
+      border: 1px solid var(--border-gold);
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      margin-top: 10px;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(212, 175, 55, 0.12);
+      border-color: var(--gold);
+    }
+
+    .badge-monogram {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 14px;
+      border-radius: 50%;
+      border: 1.5px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cinzel', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--gold);
+      background: rgba(212, 175, 55, 0.08);
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
+    }
+
+    .success-box {
+      text-align: center;
+      padding: 16px;
+      background: rgba(212, 175, 55, 0.08);
+      border: 1px solid var(--border-gold);
+      border-radius: 12px;
+    }
+
+    footer {
+      margin-top: 24px;
+      font-size: 0.72rem;
+      color: #7D776C;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ascuas sutiles flotando en el fondo -->
+  <div class="embers-bg" aria-hidden="true">
+    <span class="ember"></span>
+    <span class="ember"></span>
+    <span class="ember"></span>
+    <span class="ember"></span>
+    <span class="ember"></span>
+  </div>
+
+  <!-- Barra superior para alternar entre ambos modos durante tu presentación -->
+  <div class="demo-switcher" id="demoSwitcher">
+    <button class="demo-btn active" onclick="switchView('resena')">Placa Mesa (Filtro)</button>
+    <button class="demo-btn" onclick="switchView('tarjeta')">Tarjeta Digital (vCard)</button>
+  </div>
+
+  <main class="container">
+    <div class="brand-title">Tainá</div>
+    <div class="brand-subtitle">Churrasca Brasileña</div>
+
+    <!-- ================= MODO 1: FILTRO INTELIGENTE DE RESEÑAS ================= -->
+    <section id="view-resena">
+      <h2>¿Cómo fue tu experiencia hoy?</h2>
+      <p class="desc">Tu opinión nos ayuda a mantener la excelencia en cada corte y servicio en Val'Quirico.</p>
+
+      <div class="stars-wrapper" id="starsContainer">
+        <button class="star-btn" data-val="1" aria-label="1 estrella">★</button>
+        <button class="star-btn" data-val="2" aria-label="2 estrellas">★</button>
+        <button class="star-btn" data-val="3" aria-label="3 estrellas">★</button>
+        <button class="star-btn" data-val="4" aria-label="4 estrellas">★</button>
+        <button class="star-btn" data-val="5" aria-label="5 estrellas">★</button>
+      </div>
+      <div class="rating-label" id="ratingLabel">Selecciona una calificación</div>
+
+      <!-- Panel A: 4 o 5 Estrellas -> Redirección a Google Maps -->
+      <div id="panel-google" class="panel">
+        <div class="divider"></div>
+        <div style="text-align: center;">
+          <p class="desc" style="margin-bottom: 14px; color: var(--text-main);">
+            ¡Nos alegra mucho que hayas disfrutado tu visita! Compártenos tu experiencia en Google Maps:
+          </p>
+          <a id="googleReviewLink" href="https://search.google.com/local/writereview?placeid=AQUI_EL_PLACE_ID" target="_blank" rel="noopener" class="btn-primary">
+            Publicar reseña en Google ★
+          </a>
+        </div>
+      </div>
+
+      <!-- Panel B: 1 a 3 Estrellas -> Buzón Privado a Gerencia -->
+      <div id="panel-queja" class="panel">
+        <div class="divider"></div>
+        <p class="desc" style="margin-bottom: 14px;">
+          Lamentamos que algo no haya sido perfecto. Envía un mensaje directo a nuestra Gerencia para atenderlo de inmediato:
+        </p>
+
+        <form id="complaintForm">
+          <input type="hidden" name="access_key" value="TU_ACCESS_KEY_DE_WEB3FORMS" />
+          <input type="hidden" name="subject" value="Alerta de Servicio - Tainá Val'Quirico" />
+          <input type="hidden" id="hiddenRating" name="calificacion" value="" />
+
+          <div class="form-group">
+            <label for="mesa">Mesa o área (opcional)</label>
+            <input type="text" id="mesa" name="mesa" placeholder="Ej. Mesa 4 / Terraza" />
+          </div>
+
+          <div class="form-group">
+            <label for="contacto">Tu nombre o teléfono (opcional, si deseas seguimiento)</label>
+            <input type="text" id="contacto" name="contacto" placeholder="Ej. Carlos — 222 123 4567" />
+          </div>
+
+          <div class="form-group">
+            <label for="mensaje">¿Qué podemos mejorar? *</label>
+            <textarea id="mensaje" name="mensaje" required placeholder="Cuéntanos qué sucedió con el servicio o los cortes..."></textarea>
+          </div>
+
+          <button type="submit" class="btn-primary" id="submitBtn">
+            Enviar directo a Gerencia
+          </button>
+        </form>
+
+        <div id="complaintSuccess" class="success-box" style="display: none; margin-top: 12px;">
+          <strong style="color: var(--gold); display: block; margin-bottom: 6px;">Mensaje enviado a Gerencia</strong>
+          <span style="font-size: 0.85rem; color: var(--text-muted);">
+            Agradecemos tu retroalimentación. Nuestro equipo revisará tu comentario de inmediato.
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= MODO 2: TARJETA DIGITAL EJECUTIVA (vCard) ================= -->
+    <section id="view-tarjeta" style="display: none;">
+      <div class="badge-monogram">TA</div>
+      <h2>Gerencia y Reservaciones</h2>
+      <p class="desc" style="margin-bottom: 18px;">
+        Val'Quirico · Cortes brasileños al espiedo, eventos privados y reservaciones.
+      </p>
+
+      <button onclick="downloadVCard()" class="btn-primary">
+        Guardar Contacto en Celular
+      </button>
+
+      <a href="https://wa.me/522220000000?text=Hola%20Tain%C3%A1,%20me%20gustar%C3%ADa%20hacer%20una%20reservaci%C3%B3n%20en%20Val'Quirico" target="_blank" rel="noopener" class="btn-secondary">
+        Reservar por WhatsApp
+      </a>
+
+      <a href="https://maps.google.com/?q=Taina+ValQuirico" target="_blank" rel="noopener" class="btn-secondary">
+        Cómo llegar (Val'Quirico)
+      </a>
+
+      <a href="https://www.instagram.com/" target="_blank" rel="noopener" class="btn-secondary">
+        Instagram Oficial
+      </a>
+    </section>
+
+    <footer>Powered by: Cristian Pulido</footer>
+  </main>
+
+  <script>
+    const CONFIG = {
+      nombreRestaurante: "Tainá Churrasca Brasileña",
+      cargoContacto: "Gerencia y Reservaciones",
+      telefono: "+522220000000",
+      emailEmpresa: "gerencia@taina.mx",
+      sitioWeb: "https://valquirico.com",
+      direccion: "Val'Quirico, Santa Isabel Tetlatlahuca, Tlaxcala, México",
+      linkResenaGoogle: "https://search.google.com/local/writereview?placeid=AQUI_EL_PLACE_ID"
+    };
+
+    document.getElementById("googleReviewLink").href = CONFIG.linkResenaGoogle;
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("modo") === "tarjeta") {
+      switchView("tarjeta");
+    }
+
+    function switchView(view) {
+      const resenaSec = document.getElementById("view-resena");
+      const tarjetaSec = document.getElementById("view-tarjeta");
+      const btns = document.querySelectorAll(".demo-btn");
+
+      if (view === "tarjeta") {
+        resenaSec.style.display = "none";
+        tarjetaSec.style.display = "block";
+        btns[0].classList.remove("active");
+        btns[1].classList.add("active");
+      } else {
+        resenaSec.style.display = "block";
+        tarjetaSec.style.display = "none";
+        btns[0].classList.add("active");
+        btns[1].classList.remove("active");
+      }
+    }
+
+    const starBtns = document.querySelectorAll(".star-btn");
+    const ratingLabel = document.getElementById("ratingLabel");
+    const panelGoogle = document.getElementById("panel-google");
+    const panelQueja = document.getElementById("panel-queja");
+    const hiddenRating = document.getElementById("hiddenRating");
+
+    const labels = {
+      1: "1 estrella — Necesitamos mejorar",
+      2: "2 estrellas — Debajo de lo esperado",
+      3: "3 estrellas — Experiencia regular",
+      4: "4 estrellas — ¡Muy buena experiencia!",
+      5: "5 estrellas — ¡Excelente servicio y cortes!"
+    };
+
+    starBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const val = parseInt(btn.getAttribute("data-val"), 10);
+
+        starBtns.forEach(b => {
+          b.classList.toggle("active", parseInt(b.getAttribute("data-val"), 10) <= val);
+        });
+
+        ratingLabel.textContent = labels[val];
+        hiddenRating.value = `${val} estrellas`;
+
+        if (val >= 4) {
+          panelQueja.classList.remove("visible");
+          panelGoogle.classList.add("visible");
+        } else {
+          panelGoogle.classList.remove("visible");
+          panelQueja.classList.add("visible");
+        }
+      });
+    });
+
+    const complaintForm = document.getElementById("complaintForm");
+    complaintForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const submitBtn = document.getElementById("submitBtn");
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Enviando...";
+
+      const formData = new FormData(complaintForm);
+
+      try {
+        if (formData.get("access_key") === "TU_ACCESS_KEY_DE_WEB3FORMS") {
+          await new Promise(r => setTimeout(r, 600));
+          complaintForm.style.display = "none";
+          document.getElementById("complaintSuccess").style.display = "block";
+          return;
+        }
+
+        const res = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          body: formData
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          complaintForm.style.display = "none";
+          document.getElementById("complaintSuccess").style.display = "block";
+        } else {
+          alert("Hubo un problema al enviar. Intenta nuevamente.");
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Enviar directo a Gerencia";
+        }
+      } catch (err) {
+        alert("Error de conexión. Verifica tu internet.");
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Enviar directo a Gerencia";
+      }
+    });
+
+    function downloadVCard() {
+      const vcard = [
+        "BEGIN:VCARD",
+        "VERSION:3.0",
+        `N:Tainá;Churrasca Brasileña;;;`,
+        `FN:${CONFIG.nombreRestaurante}`,
+        `ORG:${CONFIG.nombreRestaurante}`,
+        `TITLE:${CONFIG.cargoContacto}`,
+        `TEL;TYPE=WORK,VOICE:${CONFIG.telefono}`,
+        `EMAIL;TYPE=PREF,INTERNET:${CONFIG.emailEmpresa}`,
+        `URL:${CONFIG.sitioWeb}`,
+        `ADR;TYPE=WORK:;;${CONFIG.direccion};;;;`,
+        "NOTE:Reservaciones y eventos privados en Val'Quirico.",
+        "END:VCARD"
+      ].join("\r\n");
+
+      const blob = new Blob([vcard], { type: "text/vcard;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "Taina_Churrasca_Brasilena.vcf";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+</html>
