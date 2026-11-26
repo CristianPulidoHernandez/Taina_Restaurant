@@ -384,7 +384,6 @@
     <span class="ember"></span>
   </div>
 
-  <!-- Barra superior para alternar vistas (puedes ocultarla en producción si deseas) -->
   <div class="demo-switcher" id="demoSwitcher">
     <button class="demo-btn active" onclick="switchView('resena')">Placa Mesa (Filtro)</button>
     <button class="demo-btn" onclick="switchView('tarjeta')">Tarjeta Digital</button>
@@ -415,7 +414,7 @@
           <p class="desc" style="margin-bottom: 14px; color: var(--text-main);">
             ¡Nos alegra mucho que hayas disfrutado tu visita! Compártenos tu experiencia en Google Maps:
           </p>
-          <a id="googleReviewLink" href="https://maps.app.goo.gl/hy5a2QYWhn5nPf8PA" target="_blank" rel="noopener" class="btn-primary">
+          <a id="googleReviewLink" href="https://g.page/r/CQBTaYxw46EEECE/review" target="_blank" rel="noopener" class="btn-primary">
             Publicar reseña en Google ★
           </a>
         </div>
@@ -516,9 +515,6 @@
   </main>
 
   <script>
-    // =========================================================================
-    // CONFIGURACIÓN DEL CLIENTE (ACTUALIZA AQUÍ LOS DATOS OFICIALES DE TAINÁ)
-    // =========================================================================
     const CONFIG = {
       whatsappNumero: "522220000000", // Código de país + 10 dígitos sin espacios ni '+'
       mensajeWhatsApp: "Hola Tainá, me gustaría hacer una reservación en Val'Quirico",
@@ -612,18 +608,17 @@
         submitBtn.textContent = "Enviando...";
 
         const formData = new FormData(form);
+        const objectData = Object.fromEntries(formData);
+        const jsonBody = JSON.stringify(objectData);
 
         try {
-          if (formData.get("access_key") === "ab9523ba-f88f-4981-8a65-a697692ef84b") {
-            await new Promise(r => setTimeout(r, 600));
-            form.style.display = "none";
-            document.getElementById(successId).style.display = "block";
-            return;
-          }
-
           const res = await fetch("https://api.web3forms.com/submit", {
             method: "POST",
-            body: formData
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+            body: jsonBody
           });
           const data = await res.json();
 
@@ -631,7 +626,7 @@
             form.style.display = "none";
             document.getElementById(successId).style.display = "block";
           } else {
-            alert("Hubo un problema al enviar. Intenta nuevamente.");
+            alert("Web3Forms respondió: " + (data.message || "Error al enviar"));
             submitBtn.disabled = false;
             submitBtn.textContent = defaultBtnText;
           }
