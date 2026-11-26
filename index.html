@@ -30,7 +30,6 @@
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
       background-color: var(--bg-dark);
-      /* Capas ambientales: luz de fachada arriba, resplandor de brasas abajo y tonos piedra/tierra */
       background-image:
         radial-gradient(ellipse at 50% 0%, rgba(212, 175, 55, 0.14) 0%, transparent 55%),
         radial-gradient(ellipse at 50% 105%, var(--ember-glow) 0%, rgba(120, 45, 20, 0.08) 40%, transparent 70%),
@@ -46,7 +45,6 @@
       overflow-x: hidden;
     }
 
-    /* Textura sutil de muro de estuco/piedra rústica estilo Val'Quirico */
     body::before {
       content: "";
       position: fixed;
@@ -57,7 +55,6 @@
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.45'/%3E%3C/svg%3E");
     }
 
-    /* Marco arquitectónico sutil en el fondo (evoca arcos y piedra medieval) */
     body::after {
       content: "";
       position: fixed;
@@ -71,7 +68,6 @@
       z-index: 0;
     }
 
-    /* Contenedor de ascuas/chispas flotantes muy tenues */
     .embers-bg {
       position: fixed;
       inset: 0;
@@ -98,23 +94,12 @@
     .ember:nth-child(5) { left: 88%; animation-duration: 11s; animation-delay: 2s; }
 
     @keyframes riseEmber {
-      0% {
-        transform: translateY(0) translateX(0) scale(1);
-        opacity: 0;
-      }
-      20% {
-        opacity: 0.45;
-      }
-      80% {
-        opacity: 0.25;
-      }
-      100% {
-        transform: translateY(-105vh) translateX(18px) scale(0.4);
-        opacity: 0;
-      }
+      0% { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
+      20% { opacity: 0.45; }
+      80% { opacity: 0.25; }
+      100% { transform: translateY(-105vh) translateX(18px) scale(0.4); opacity: 0; }
     }
 
-    /* Selector superior solo para que tú cambies de vista en la demo */
     .demo-switcher {
       position: relative;
       z-index: 2;
@@ -145,7 +130,6 @@
       color: #121110;
     }
 
-    /* Tarjeta principal con efecto cristal ahumado sobre la textura */
     .container {
       position: relative;
       z-index: 2;
@@ -165,7 +149,6 @@
       overflow: hidden;
     }
 
-    /* Halo de luz cálida retroiluminada (como el letrero exterior de Tainá) */
     .container::before {
       content: "";
       position: absolute;
@@ -178,7 +161,6 @@
       pointer-events: none;
     }
 
-    /* Marca Tainá */
     .brand-title {
       font-family: 'Cinzel', serif;
       font-size: 2.65rem;
@@ -219,7 +201,6 @@
       margin-bottom: 22px;
     }
 
-    /* Estrellas interactivas */
     .stars-wrapper {
       display: flex;
       justify-content: center;
@@ -259,7 +240,6 @@
       margin-bottom: 10px;
     }
 
-    /* Paneles dinámicos */
     .panel {
       display: none;
       animation: fadeIn 0.35s ease forwards;
@@ -276,7 +256,7 @@
     }
 
     .form-group {
-      margin-bottom: 14px;
+      margin-bottom: 13px;
     }
 
     label {
@@ -286,7 +266,7 @@
       margin-bottom: 5px;
     }
 
-    input, textarea, select {
+    input, textarea {
       width: 100%;
       background: rgba(14, 12, 10, 0.85);
       border: 1px solid rgba(212, 175, 55, 0.3);
@@ -299,13 +279,13 @@
       transition: border-color 0.2s;
     }
 
-    input:focus, textarea:focus, select:focus {
+    input:focus, textarea:focus {
       border-color: var(--gold);
     }
 
     textarea {
       resize: vertical;
-      min-height: 85px;
+      min-height: 80px;
     }
 
     .btn-primary {
@@ -374,10 +354,17 @@
 
     .success-box {
       text-align: center;
-      padding: 16px;
+      padding: 14px;
       background: rgba(212, 175, 55, 0.08);
       border: 1px solid var(--border-gold);
       border-radius: 12px;
+    }
+
+    .optional-card {
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px dashed rgba(212, 175, 55, 0.25);
+      text-align: left;
     }
 
     footer {
@@ -389,7 +376,6 @@
 </head>
 <body>
 
-  <!-- Ascuas sutiles flotando en el fondo -->
   <div class="embers-bg" aria-hidden="true">
     <span class="ember"></span>
     <span class="ember"></span>
@@ -398,10 +384,10 @@
     <span class="ember"></span>
   </div>
 
-  <!-- Barra superior para alternar entre ambos modos durante tu presentación -->
+  <!-- Barra superior para alternar vistas (puedes ocultarla en producción si deseas) -->
   <div class="demo-switcher" id="demoSwitcher">
     <button class="demo-btn active" onclick="switchView('resena')">Placa Mesa (Filtro)</button>
-    <button class="demo-btn" onclick="switchView('tarjeta')">Tarjeta Digital (vCard)</button>
+    <button class="demo-btn" onclick="switchView('tarjeta')">Tarjeta Digital</button>
   </div>
 
   <main class="container">
@@ -422,7 +408,7 @@
       </div>
       <div class="rating-label" id="ratingLabel">Selecciona una calificación</div>
 
-      <!-- Panel A: 4 o 5 Estrellas -> Redirección a Google Maps -->
+      <!-- Panel A: 4 o 5 Estrellas -> Google Maps + Comentario Opcional Interno -->
       <div id="panel-google" class="panel">
         <div class="divider"></div>
         <div style="text-align: center;">
@@ -432,6 +418,30 @@
           <a id="googleReviewLink" href="https://search.google.com/local/writereview?placeid=AQUI_EL_PLACE_ID" target="_blank" rel="noopener" class="btn-primary">
             Publicar reseña en Google ★
           </a>
+        </div>
+
+        <div class="optional-card">
+          <form id="positiveCommentForm">
+            <input type="hidden" name="access_key" value="TU_ACCESS_KEY_DE_WEB3FORMS" />
+            <input type="hidden" name="subject" value="Comentario Positivo (4-5 ★) - Tainá Val'Quirico" />
+            <input type="hidden" id="hiddenPositiveRating" name="calificacion" value="" />
+
+            <div class="form-group" style="margin-bottom: 10px;">
+              <label for="comentarioOpcional">¿Deseas dejarnos un comentario directo al equipo? (Opcional)</label>
+              <textarea id="comentarioOpcional" name="comentario" style="min-height: 68px;" placeholder="Ej. Excelente atención de nuestro mesero y el punto de la picanha..."></textarea>
+            </div>
+
+            <button type="submit" class="btn-secondary" id="positiveSubmitBtn" style="margin-top: 0;">
+              Enviar comentario opcional
+            </button>
+          </form>
+
+          <div id="positiveSuccess" class="success-box" style="display: none; margin-top: 10px;">
+            <strong style="color: var(--gold); display: block; margin-bottom: 4px;">¡Gracias por tu comentario!</strong>
+            <span style="font-size: 0.82rem; color: var(--text-muted);">
+              Tu mensaje ha sido compartido con el equipo de Tainá.
+            </span>
+          </div>
         </div>
       </div>
 
@@ -444,22 +454,27 @@
 
         <form id="complaintForm">
           <input type="hidden" name="access_key" value="TU_ACCESS_KEY_DE_WEB3FORMS" />
-          <input type="hidden" name="subject" value="Alerta de Servicio - Tainá Val'Quirico" />
+          <input type="hidden" name="subject" value="Alerta de Servicio (1-3 ★) - Tainá Val'Quirico" />
           <input type="hidden" id="hiddenRating" name="calificacion" value="" />
 
           <div class="form-group">
-            <label for="mesa">Mesa o área (opcional)</label>
-            <input type="text" id="mesa" name="mesa" placeholder="Ej. Mesa 4 / Terraza" />
+            <label for="nombreCliente">Nombre *</label>
+            <input type="text" id="nombreCliente" name="nombre" required placeholder="Tu nombre" />
           </div>
 
           <div class="form-group">
-            <label for="contacto">Tu nombre o teléfono (opcional, si deseas seguimiento)</label>
-            <input type="text" id="contacto" name="contacto" placeholder="Ej. Carlos — 222 123 4567" />
+            <label for="numeroCliente">Número de teléfono *</label>
+            <input type="tel" id="numeroCliente" name="numero" required placeholder="Ej. 222 123 4567" />
+          </div>
+
+          <div class="form-group">
+            <label for="nombreMesero">Nombre del mesero</label>
+            <input type="text" id="nombreMesero" name="nombre_mesero" placeholder="¿Quién te atendió hoy?" />
           </div>
 
           <div class="form-group">
             <label for="mensaje">¿Qué podemos mejorar? *</label>
-            <textarea id="mensaje" name="mensaje" required placeholder="Cuéntanos qué sucedió con el servicio o los cortes..."></textarea>
+            <textarea id="mensaje" name="que_podemos_mejorar" required placeholder="Cuéntanos qué sucedió con el servicio o los cortes..."></textarea>
           </div>
 
           <button type="submit" class="btn-primary" id="submitBtn">
@@ -476,27 +491,23 @@
       </div>
     </section>
 
-    <!-- ================= MODO 2: TARJETA DIGITAL EJECUTIVA (vCard) ================= -->
+    <!-- ================= MODO 2: TARJETA DIGITAL EJECUTIVA ================= -->
     <section id="view-tarjeta" style="display: none;">
       <div class="badge-monogram">TA</div>
       <h2>Gerencia y Reservaciones</h2>
-      <p class="desc" style="margin-bottom: 18px;">
+      <p class="desc" style="margin-bottom: 20px;">
         Val'Quirico · Cortes brasileños al espiedo, eventos privados y reservaciones.
       </p>
 
-      <button onclick="downloadVCard()" class="btn-primary">
-        Guardar Contacto en Celular
-      </button>
-
-      <a href="https://wa.me/522220000000?text=Hola%20Tain%C3%A1,%20me%20gustar%C3%ADa%20hacer%20una%20reservaci%C3%B3n%20en%20Val'Quirico" target="_blank" rel="noopener" class="btn-secondary">
+      <a id="whatsappMainLink" href="https://wa.me/522220000000?text=Hola%20Tain%C3%A1,%20me%20gustar%C3%ADa%20hacer%20una%20reservaci%C3%B3n%20en%20Val'Quirico" target="_blank" rel="noopener" class="btn-primary">
         Reservar por WhatsApp
       </a>
 
-      <a href="https://maps.google.com/?q=Taina+ValQuirico" target="_blank" rel="noopener" class="btn-secondary">
+      <a id="mapsLink" href="https://maps.google.com/?q=Taina+ValQuirico" target="_blank" rel="noopener" class="btn-secondary">
         Cómo llegar (Val'Quirico)
       </a>
 
-      <a href="https://www.instagram.com/" target="_blank" rel="noopener" class="btn-secondary">
+      <a id="instagramLink" href="https://www.instagram.com/" target="_blank" rel="noopener" class="btn-secondary">
         Instagram Oficial
       </a>
     </section>
@@ -505,17 +516,22 @@
   </main>
 
   <script>
+    // =========================================================================
+    // CONFIGURACIÓN DEL CLIENTE (ACTUALIZA AQUÍ LOS DATOS OFICIALES DE TAINÁ)
+    // =========================================================================
     const CONFIG = {
-      nombreRestaurante: "Tainá Churrasca Brasileña",
-      cargoContacto: "Gerencia y Reservaciones",
-      telefono: "+522220000000",
-      emailEmpresa: "gerencia@taina.mx",
-      sitioWeb: "https://valquirico.com",
-      direccion: "Val'Quirico, Santa Isabel Tetlatlahuca, Tlaxcala, México",
-      linkResenaGoogle: "https://search.google.com/local/writereview?placeid=AQUI_EL_PLACE_ID"
+      whatsappNumero: "522220000000", // Código de país + 10 dígitos sin espacios ni '+'
+      mensajeWhatsApp: "Hola Tainá, me gustaría hacer una reservación en Val'Quirico",
+      linkResenaGoogle: "https://search.google.com/local/writereview?placeid=AQUI_EL_PLACE_ID",
+      linkUbicacionMaps: "https://maps.google.com/?q=Taina+ValQuirico",
+      linkInstagram: "https://www.instagram.com/"
     };
 
     document.getElementById("googleReviewLink").href = CONFIG.linkResenaGoogle;
+    document.getElementById("whatsappMainLink").href =
+      `https://wa.me/${CONFIG.whatsappNumero}?text=${encodeURIComponent(CONFIG.mensajeWhatsApp)}`;
+    document.getElementById("mapsLink").href = CONFIG.linkUbicacionMaps;
+    document.getElementById("instagramLink").href = CONFIG.linkInstagram;
 
     const params = new URLSearchParams(window.location.search);
     if (params.get("modo") === "tarjeta") {
@@ -545,6 +561,7 @@
     const panelGoogle = document.getElementById("panel-google");
     const panelQueja = document.getElementById("panel-queja");
     const hiddenRating = document.getElementById("hiddenRating");
+    const hiddenPositiveRating = document.getElementById("hiddenPositiveRating");
 
     const labels = {
       1: "1 estrella — Necesitamos mejorar",
@@ -564,6 +581,7 @@
 
         ratingLabel.textContent = labels[val];
         hiddenRating.value = `${val} estrellas`;
+        hiddenPositiveRating.value = `${val} estrellas`;
 
         if (val >= 4) {
           panelQueja.classList.remove("visible");
@@ -575,70 +593,58 @@
       });
     });
 
-    const complaintForm = document.getElementById("complaintForm");
-    complaintForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const submitBtn = document.getElementById("submitBtn");
-      submitBtn.disabled = true;
-      submitBtn.textContent = "Enviando...";
+    // Función reutilizable para enviar formularios a Web3Forms
+    function setupFormHandler(formId, btnId, successId, defaultBtnText, requireTextFieldId = null) {
+      const form = document.getElementById(formId);
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-      const formData = new FormData(complaintForm);
-
-      try {
-        if (formData.get("access_key") === "TU_ACCESS_KEY_DE_WEB3FORMS") {
-          await new Promise(r => setTimeout(r, 600));
-          complaintForm.style.display = "none";
-          document.getElementById("complaintSuccess").style.display = "block";
-          return;
+        if (requireTextFieldId) {
+          const field = document.getElementById(requireTextFieldId);
+          if (!field.value.trim()) {
+            field.focus();
+            return;
+          }
         }
 
-        const res = await fetch("https://api.web3forms.com/submit", {
-          method: "POST",
-          body: formData
-        });
-        const data = await res.json();
+        const submitBtn = document.getElementById(btnId);
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Enviando...";
 
-        if (data.success) {
-          complaintForm.style.display = "none";
-          document.getElementById("complaintSuccess").style.display = "block";
-        } else {
-          alert("Hubo un problema al enviar. Intenta nuevamente.");
+        const formData = new FormData(form);
+
+        try {
+          if (formData.get("access_key") === "TU_ACCESS_KEY_DE_WEB3FORMS") {
+            await new Promise(r => setTimeout(r, 600));
+            form.style.display = "none";
+            document.getElementById(successId).style.display = "block";
+            return;
+          }
+
+          const res = await fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            body: formData
+          });
+          const data = await res.json();
+
+          if (data.success) {
+            form.style.display = "none";
+            document.getElementById(successId).style.display = "block";
+          } else {
+            alert("Hubo un problema al enviar. Intenta nuevamente.");
+            submitBtn.disabled = false;
+            submitBtn.textContent = defaultBtnText;
+          }
+        } catch (err) {
+          alert("Error de conexión. Verifica tu internet.");
           submitBtn.disabled = false;
-          submitBtn.textContent = "Enviar directo a Gerencia";
+          submitBtn.textContent = defaultBtnText;
         }
-      } catch (err) {
-        alert("Error de conexión. Verifica tu internet.");
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Enviar directo a Gerencia";
-      }
-    });
-
-    function downloadVCard() {
-      const vcard = [
-        "BEGIN:VCARD",
-        "VERSION:3.0",
-        `N:Tainá;Churrasca Brasileña;;;`,
-        `FN:${CONFIG.nombreRestaurante}`,
-        `ORG:${CONFIG.nombreRestaurante}`,
-        `TITLE:${CONFIG.cargoContacto}`,
-        `TEL;TYPE=WORK,VOICE:${CONFIG.telefono}`,
-        `EMAIL;TYPE=PREF,INTERNET:${CONFIG.emailEmpresa}`,
-        `URL:${CONFIG.sitioWeb}`,
-        `ADR;TYPE=WORK:;;${CONFIG.direccion};;;;`,
-        "NOTE:Reservaciones y eventos privados en Val'Quirico.",
-        "END:VCARD"
-      ].join("\r\n");
-
-      const blob = new Blob([vcard], { type: "text/vcard;charset=utf-8" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "Taina_Churrasca_Brasilena.vcf";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      });
     }
+
+    setupFormHandler("complaintForm", "submitBtn", "complaintSuccess", "Enviar directo a Gerencia");
+    setupFormHandler("positiveCommentForm", "positiveSubmitBtn", "positiveSuccess", "Enviar comentario opcional", "comentarioOpcional");
   </script>
 </body>
 </html>
