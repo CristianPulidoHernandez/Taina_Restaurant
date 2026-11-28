@@ -360,13 +360,6 @@
       border-radius: 12px;
     }
 
-    .optional-card {
-      margin-top: 18px;
-      padding-top: 16px;
-      border-top: 1px dashed rgba(212, 175, 55, 0.25);
-      text-align: left;
-    }
-
     footer {
       margin-top: 24px;
       font-size: 0.72rem;
@@ -407,7 +400,7 @@
       </div>
       <div class="rating-label" id="ratingLabel">Selecciona una calificación</div>
 
-      <!-- Panel A: 4 o 5 Estrellas -> Google Maps + Comentario Opcional Interno -->
+      <!-- Panel A: 4 o 5 Estrellas -> Directo a Google Maps -->
       <div id="panel-google" class="panel">
         <div class="divider"></div>
         <div style="text-align: center;">
@@ -418,37 +411,13 @@
             Publicar reseña en Google ★
           </a>
         </div>
-
-        <div class="optional-card">
-          <form id="positiveCommentForm">
-            <input type="hidden" name="access_key" value="ab9523ba-f88f-4981-8a65-a697692ef84b" />
-            <input type="hidden" name="subject" value="Comentario Positivo (4-5 ★) - Tainá Val'Quirico" />
-            <input type="hidden" id="hiddenPositiveRating" name="calificacion" value="" />
-
-            <div class="form-group" style="margin-bottom: 10px;">
-              <label for="comentarioOpcional">¿Deseas dejarnos un comentario directo al equipo? (Opcional)</label>
-              <textarea id="comentarioOpcional" name="comentario" style="min-height: 68px;" placeholder="Ej. Excelente atención de nuestro mesero y el punto de la picanha..."></textarea>
-            </div>
-
-            <button type="submit" class="btn-secondary" id="positiveSubmitBtn" style="margin-top: 0;">
-              Enviar comentario opcional
-            </button>
-          </form>
-
-          <div id="positiveSuccess" class="success-box" style="display: none; margin-top: 10px;">
-            <strong style="color: var(--gold); display: block; margin-bottom: 4px;">¡Gracias por tu comentario!</strong>
-            <span style="font-size: 0.82rem; color: var(--text-muted);">
-              Tu mensaje ha sido compartido con el equipo de Tainá.
-            </span>
-          </div>
-        </div>
       </div>
 
-      <!-- Panel B: 1 a 3 Estrellas -> Buzón Privado a Gerencia -->
+      <!-- Panel B: 1 a 3 Estrellas -> Buzón Privado -->
       <div id="panel-queja" class="panel">
         <div class="divider"></div>
         <p class="desc" style="margin-bottom: 14px;">
-          Lamentamos que algo no haya sido perfecto. Envía un mensaje directo a nuestra Gerencia para atenderlo de inmediato:
+          Lamentamos que algo no haya sido perfecto. Envíanos tus comentarios para atenderlo de inmediato:
         </p>
 
         <form id="complaintForm">
@@ -462,8 +431,8 @@
           </div>
 
           <div class="form-group">
-            <label for="numeroCliente">Número de teléfono *</label>
-            <input type="tel" id="numeroCliente" name="numero" required placeholder="Ej. 222 123 4567" />
+            <label for="numeroCliente">Número de teléfono (10 dígitos) *</label>
+            <input type="tel" id="numeroCliente" name="numero" inputmode="numeric" maxlength="10" pattern="[0-9]{10}" required placeholder="Ej. 2221234567" />
           </div>
 
           <div class="form-group">
@@ -477,12 +446,12 @@
           </div>
 
           <button type="submit" class="btn-primary" id="submitBtn">
-            Enviar directo a Gerencia
+            Enviar
           </button>
         </form>
 
         <div id="complaintSuccess" class="success-box" style="display: none; margin-top: 12px;">
-          <strong style="color: var(--gold); display: block; margin-bottom: 6px;">Mensaje enviado a Gerencia</strong>
+          <strong style="color: var(--gold); display: block; margin-bottom: 6px;">Mensaje enviado</strong>
           <span style="font-size: 0.85rem; color: var(--text-muted);">
             Agradecemos tu retroalimentación. Nuestro equipo revisará tu comentario de inmediato.
           </span>
@@ -511,7 +480,7 @@
       </a>
     </section>
 
-    <footer>Powered by: Cristian Pulido</footer>
+    <footer>Powered by Axis</footer>
   </main>
 
   <script>
@@ -557,7 +526,6 @@
     const panelGoogle = document.getElementById("panel-google");
     const panelQueja = document.getElementById("panel-queja");
     const hiddenRating = document.getElementById("hiddenRating");
-    const hiddenPositiveRating = document.getElementById("hiddenPositiveRating");
 
     const labels = {
       1: "1 estrella — Necesitamos mejorar",
@@ -577,7 +545,6 @@
 
         ratingLabel.textContent = labels[val];
         hiddenRating.value = `${val} estrellas`;
-        hiddenPositiveRating.value = `${val} estrellas`;
 
         if (val >= 4) {
           panelQueja.classList.remove("visible");
@@ -589,57 +556,56 @@
       });
     });
 
-    // Función reutilizable para enviar formularios a Web3Forms
-    function setupFormHandler(formId, btnId, successId, defaultBtnText, requireTextFieldId = null) {
-      const form = document.getElementById(formId);
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
+    // Restringir el campo de teléfono estrictamente a dígitos (máximo 10)
+    const numeroInput = document.getElementById("numeroCliente");
+    numeroInput.addEventListener("input", () => {
+      numeroInput.value = numeroInput.value.replace(/\D/g, "").slice(0, 10);
+    });
 
-        if (requireTextFieldId) {
-          const field = document.getElementById(requireTextFieldId);
-          if (!field.value.trim()) {
-            field.focus();
-            return;
-          }
-        }
+    // Envío del formulario de 1 a 3 estrellas a Web3Forms
+    const complaintForm = document.getElementById("complaintForm");
+    complaintForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-        const submitBtn = document.getElementById(btnId);
-        submitBtn.disabled = true;
-        submitBtn.textContent = "Enviando...";
+      if (numeroInput.value.length !== 10) {
+        alert("Por favor ingresa un número de teléfono válido de 10 dígitos.");
+        numeroInput.focus();
+        return;
+      }
 
-        const formData = new FormData(form);
-        const objectData = Object.fromEntries(formData);
-        const jsonBody = JSON.stringify(objectData);
+      const submitBtn = document.getElementById("submitBtn");
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Enviando...";
 
-        try {
-          const res = await fetch("https://api.web3forms.com/submit", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Accept": "application/json"
-            },
-            body: jsonBody
-          });
-          const data = await res.json();
+      const formData = new FormData(complaintForm);
+      const objectData = Object.fromEntries(formData);
+      const jsonBody = JSON.stringify(objectData);
 
-          if (data.success) {
-            form.style.display = "none";
-            document.getElementById(successId).style.display = "block";
-          } else {
-            alert("Web3Forms respondió: " + (data.message || "Error al enviar"));
-            submitBtn.disabled = false;
-            submitBtn.textContent = defaultBtnText;
-          }
-        } catch (err) {
-          alert("Error de conexión. Verifica tu internet.");
+      try {
+        const res = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: jsonBody
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          complaintForm.style.display = "none";
+          document.getElementById("complaintSuccess").style.display = "block";
+        } else {
+          alert("Web3Forms respondió: " + (data.message || "Error al enviar"));
           submitBtn.disabled = false;
-          submitBtn.textContent = defaultBtnText;
+          submitBtn.textContent = "Enviar";
         }
-      });
-    }
-
-    setupFormHandler("complaintForm", "submitBtn", "complaintSuccess", "Enviar directo a Gerencia");
-    setupFormHandler("positiveCommentForm", "positiveSubmitBtn", "positiveSuccess", "Enviar comentario opcional", "comentarioOpcional");
+      } catch (err) {
+        alert("Error de conexión. Verifica tu internet.");
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Enviar";
+      }
+    });
   </script>
 </body>
 </html>
