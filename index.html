@@ -317,7 +317,7 @@
       color: var(--text-main);
       border: 1px solid var(--border-gold);
       border-radius: 12px;
-      padding: 12px 16px;
+      padding: 12px 18px;
       font-size: 0.9rem;
       font-weight: 500;
       cursor: pointer;
@@ -335,23 +335,12 @@
       border-color: var(--gold);
     }
 
-    /* Íconos de marca en sus colores naturales */
-    .social-icon {
+    /* Íconos con colores originales de cada marca */
+    .brand-icon {
       width: 22px;
       height: 22px;
       flex-shrink: 0;
-      display: inline-block;
-    }
-
-    .wa-badge {
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: #121110;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
+      display: block;
     }
 
     .badge-monogram {
@@ -450,7 +439,7 @@
           </div>
 
           <div class="form-group">
-            <label for="numeroCliente">Número de teléfono (10 dígitos) *</label>
+            <label for="numeroCliente">Número de teléfono  *</label>
             <input type="tel" id="numeroCliente" name="numero" inputmode="numeric" maxlength="10" pattern="[0-9]{10}" required placeholder="Ej. 2221234567" />
           </div>
 
@@ -486,33 +475,31 @@
         Val'Quirico · Cortes brasileños al espiedo, eventos privados y reservaciones.
       </p>
 
-      <!-- Botón WhatsApp con ícono verde oficial (#25D366) -->
+      <!-- Botón WhatsApp  -->
       <a id="whatsappMainLink" href="https://wa.me/522220000000?text=Hola%20Tain%C3%A1,%20me%20gustar%C3%ADa%20hacer%20una%20reservaci%C3%B3n%20en%20Val'Quirico" target="_blank" rel="noopener" class="btn-primary">
-        <span class="wa-badge" aria-hidden="true">
-          <svg width="16" height="16" viewBox="0 0 32 32" fill="none">
-            <path d="M16.004 3.2c-7.06 0-12.8 5.74-12.8 12.8 0 2.256.59 4.46 1.71 6.404L3.09 28.8l6.564-1.722a12.74 12.74 0 0 0 6.35 1.694h.006c7.058 0 12.798-5.74 12.798-12.8 0-3.42-1.332-6.636-3.75-9.054A12.716 12.716 0 0 0 16.004 3.2Z" fill="#25D366"/>
-            <path d="M23.48 21.176c-.314.886-1.826 1.694-2.536 1.802-.648.098-1.468.14-2.37-.148-.546-.174-1.248-.406-2.148-.794-3.78-1.632-6.248-5.436-6.436-5.688-.188-.252-1.536-2.044-1.536-3.898 0-1.854.972-2.766 1.316-3.144.344-.378.752-.472 1.002-.472.25 0 .502.002.722.014.232.012.542-.088.848.646.314.756 1.066 2.61 1.16 2.798.094.188.156.408.032.66-.126.252-.188.408-.376.628-.188.22-.396.492-.564.66-.188.188-.384.392-.164.77.22.378.976 1.61 2.096 2.608 1.44 1.284 2.654 1.682 3.03 1.87.376.188.596.158.814-.094.22-.252.94-1.098 1.192-1.476.25-.378.502-.314.846-.188.346.126 2.194 1.034 2.57 1.222.376.188.626.282.72.44.094.158.094.912-.22 1.798Z" fill="#FFFFFF"/>
-          </svg>
-        </span>
-        Reservar por WhatsApp
-      </a>
-
-      <!-- Botón Google Maps con pin multicolor oficial -->
-      <a id="mapsLink" href="https://www.google.com/maps/place/Tain%C3%A1/@19.1914239,-98.2905189,155m/data=!3m1!1e3!4m9!1m2!2m1!1sTaina+ValQuirico!3m5!1s0x85cfdb003ef99e61:0x4a1e3708c695300!8m2!3d19.1914239!4d-98.2897847!16s%2Fg%2F11p33p_ghc?entry=ttu&g_ep=EgoyMDI2MTEyMy4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener" class="btn-secondary">
-        <svg class="social-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M12 2C8.13 2 5 5.13 5 9c0 1.74.5 3.37 1.41 4.84.95 1.54 2.2 2.86 3.16 4.4.47.75.81 1.45 1.17 2.26.26.55.47 1.5 1.26 1.5s1-.95 1.26-1.5c.37-.81.7-1.51 1.17-2.26.96-1.53 2.21-2.85 3.16-4.4C18.5 12.37 19 10.74 19 9c0-3.87-3.13-7-7-7z" fill="#EA4335"/>
-          <path d="M12 2C9.68 2 7.62 3.13 6.34 4.86l4.06 3.41A2.5 2.5 0 0 1 12 6.5V2z" fill="#1A73E8"/>
-          <path d="M6.34 4.86A6.97 6.97 0 0 0 5 9c0 1.74.5 3.37 1.41 4.84l4.18-3.51A2.5 2.5 0 0 1 10.4 8.27L6.34 4.86z" fill="#FBBC04"/>
-          <path d="M10.59 10.33L6.41 13.84c.95 1.54 2.2 2.86 3.16 4.4l4.13-3.47-3.11-4.44z" fill="#34A853"/>
-          <path d="M12 6.5a2.5 2.5 0 0 1 1.91 4.11l3.68 3.23C18.5 12.37 19 10.74 19 9c0-3.87-3.13-7-7-7v4.5z" fill="#4285F4"/>
-          <circle cx="12" cy="9" r="2.5" fill="#FFFFFF"/>
+        <span>Reservar por WhatsApp</span>
+        <svg class="brand-icon" viewBox="0 0 48 48" aria-hidden="true">
+          <circle cx="24" cy="24" r="22" fill="#25D366"/>
+          <path fill="#FFFFFF" d="M35.2 12.8C32.2 9.8 28.2 8.2 24 8.2c-8.7 0-15.8 7.1-15.8 15.8 0 2.8.7 5.5 2.1 7.9L8 40l8.3-2.2c2.3 1.3 5 1.9 7.7 1.9 8.7 0 15.8-7.1 15.8-15.8 0-4.2-1.6-8.2-4.6-11.1zM24 37c-2.4 0-4.7-.6-6.7-1.8l-.5-.3-4.9 1.3 1.3-4.8-.3-.5c-1.3-2.1-2-4.5-2-7 0-7.2 5.9-13.1 13.1-13.1 3.5 0 6.8 1.4 9.3 3.8 2.5 2.5 3.8 5.8 3.8 9.3 0 7.3-5.9 13.1-13.1 13.1zm7.2-9.8c-.4-.2-2.3-1.1-2.7-1.3-.4-.1-.6-.2-.9.2-.3.4-1 1.3-1.2 1.5-.2.3-.4.3-.8.1-.4-.2-1.7-.6-3.2-2-1.2-1.1-2-2.4-2.2-2.8-.2-.4 0-.6.2-.8.2-.2.4-.4.6-.7.2-.2.3-.4.4-.7.1-.3.1-.5 0-.7-.1-.2-.9-2.1-1.2-2.9-.3-.8-.6-.7-.9-.7h-.7c-.3 0-.7.1-1 .5-.4.4-1.4 1.3-1.4 3.3s1.4 3.8 1.6 4.1c.2.3 2.8 4.2 6.7 5.9.9.4 1.7.6 2.2.8.9.3 1.8.3 2.5.2.8-.1 2.3-.9 2.6-1.8.3-.9.3-1.7.2-1.8-.1-.2-.3-.3-.7-.5z"/>
         </svg>
-        Cómo llegar (Val'Quirico)
       </a>
 
-      <!-- Botón Instagram con degradado oficial -->
+      <!-- Botón Google Maps -->
+      <a id="mapsLink" href="https://www.google.com/maps/place/Tain%C3%A1/@19.1914239,-98.2905189,155m/data=!3m1!1e3!4m9!1m2!2m1!1sTaina+ValQuirico!3m5!1s0x85cfdb003ef99e61:0x4a1e3708c695300!8m2!3d19.1914239!4d-98.2897847!16s%2Fg%2F11p33p_ghc?entry=ttu&g_ep=EgoyMDI2MTEyMy4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener" class="btn-secondary">
+        <span>Cómo llegar (Val'Quirico)</span>
+        <svg class="brand-icon" viewBox="0 0 48 48" aria-hidden="true">
+          <path fill="#EA4335" d="M24 4c-7.7 0-14 6.3-14 14 0 3.3 1.2 6.4 3.1 8.8L24 14l5.4-8.9C27.8 4.4 25.9 4 24 4z"/>
+          <path fill="#4285F4" d="M34.9 9.2L29.4 5.1 24 14l10.9 12.8c1.9-2.4 3.1-5.5 3.1-8.8 0-3.4-1.2-6.5-3.1-8.8z"/>
+          <path fill="#FBBC05" d="M13.1 26.8c2.6 3.3 6.2 7.5 8.8 11.7l2.1-10.2L13.1 26.8z"/>
+          <path fill="#34A853" d="M24 28.3l-2.1 10.2c1 1.6 1.7 3.3 2.1 5.5.8-4.3 4.8-9.5 10.9-17.2L24 14v14.3z"/>
+          <circle cx="24" cy="18" r="5.2" fill="#FFFFFF"/>
+        </svg>
+      </a>
+
+      <!-- Botón Instagram -->
       <a id="instagramLink" href="https://www.instagram.com/taina.mx26?evlk=NTFtcTFseGgxd3Yz" target="_blank" rel="noopener" class="btn-secondary">
-        <svg class="social-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <span>Instagram Oficial</span>
+        <svg class="brand-icon" viewBox="0 0 48 48" aria-hidden="true">
           <defs>
             <radialGradient id="igGrad" cx="30%" cy="107%" r="150%">
               <stop offset="0%" stop-color="#fdf497"/>
@@ -522,12 +509,11 @@
               <stop offset="90%" stop-color="#285AEB"/>
             </radialGradient>
           </defs>
-          <rect x="2" y="2" width="20" height="20" rx="5.5" fill="url(#igGrad)"/>
-          <rect x="5.2" y="5.2" width="13.6" height="13.6" rx="3.8" stroke="#FFFFFF" stroke-width="1.7"/>
-          <circle cx="12" cy="12" r="3.3" stroke="#FFFFFF" stroke-width="1.7"/>
-          <circle cx="16.4" cy="7.6" r="1.1" fill="#FFFFFF"/>
+          <rect x="4" y="4" width="40" height="40" rx="11" fill="url(#igGrad)"/>
+          <rect x="11" y="11" width="26" height="26" rx="7" fill="none" stroke="#FFFFFF" stroke-width="3"/>
+          <circle cx="24" cy="24" r="6.2" fill="none" stroke="#FFFFFF" stroke-width="3"/>
+          <circle cx="32.2" cy="15.8" r="1.8" fill="#FFFFFF"/>
         </svg>
-        Instagram Oficial
       </a>
     </section>
 
@@ -607,13 +593,11 @@
       });
     });
 
-    // Restringir el campo de teléfono estrictamente a dígitos (máximo 10)
     const numeroInput = document.getElementById("numeroCliente");
     numeroInput.addEventListener("input", () => {
       numeroInput.value = numeroInput.value.replace(/\D/g, "").slice(0, 10);
     });
 
-    // Envío del formulario de 1 a 3 estrellas a Web3Forms
     const complaintForm = document.getElementById("complaintForm");
     complaintForm.addEventListener("submit", async (e) => {
       e.preventDefault();
